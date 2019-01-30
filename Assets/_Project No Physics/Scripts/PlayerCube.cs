@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityStandardAssets.CrossPlatformInput;
+using System;
+
 
 public class PlayerCube : NetworkBehaviour
 {
     public float moveSpeed;
+    public float mouseSpeed;
     private Camera cam;
 
     [SyncVar]
     Vector3 serverPosition;
     Vector3 serverPositionSmoothVelocity;
+
 
 
 
@@ -22,7 +27,7 @@ public class PlayerCube : NetworkBehaviour
 
     void Update()
     {
-    
+
         if (hasAuthority == false)
         {
 
@@ -39,28 +44,39 @@ public class PlayerCube : NetworkBehaviour
 
         Vector3 direction = new Vector3(0, 0, 0);
 
-        if (Input.GetKey("left")) {
+        float X = Input.GetAxis("Mouse X") * mouseSpeed;
+        float Y = Input.GetAxis("Mouse Y") * mouseSpeed;
+
+        transform.Rotate(0, X, 0);
+
+        //left
+        if (Input.GetKey(KeyCode.A))
+        {
+
             direction = cam.transform.TransformDirection(-(Time.deltaTime * moveSpeed), 0, 0);
 
 
             //transform.Translate(-(Time.deltaTime * moveSpeed), 0, 0, null);
         }
 
-        if (Input.GetKey("right")) 
+        //right
+        if (Input.GetKey(KeyCode.D))
         {
             direction = cam.transform.TransformDirection((Time.deltaTime * moveSpeed), 0, 0);
 
             //transform.Translate((Time.deltaTime * moveSpeed), 0, 0, null);
         }
 
-        if (Input.GetKey("down"))
+        //down
+        if (Input.GetKey(KeyCode.S))
         {
             direction = cam.transform.TransformDirection(0, 0, -(Time.deltaTime * moveSpeed));
 
             //transform.Translate(0, 0, -(Time.deltaTime * moveSpeed), null);
         }
 
-        if (Input.GetKey("up"))
+        //up
+        if (Input.GetKey(KeyCode.W))
         {
             direction = cam.transform.TransformDirection(0, 0, (Time.deltaTime * moveSpeed));
 
@@ -68,6 +84,9 @@ public class PlayerCube : NetworkBehaviour
         }
 
         direction.y = 0.0f;
+
+
+
 
         transform.Translate(direction.x, direction.y, direction.z, null);
         CmdUpdatePosition(transform.position);

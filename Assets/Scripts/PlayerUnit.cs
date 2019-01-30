@@ -19,13 +19,13 @@ public class PlayerUnit : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isServer)
+        if (isServer)
         {
             //can maybe update damage instead of on local object
         }
@@ -36,12 +36,12 @@ public class PlayerUnit : NetworkBehaviour
         }
 
 
-        if(hasAuthority == false)
+        if (hasAuthority == false)
         {
             transform.position = Vector3.SmoothDamp(
-                transform.position, 
-                serverPosition, 
-                ref serverPositionSmoothVelocity, 
+                transform.position,
+                serverPosition,
+                ref serverPositionSmoothVelocity,
                 0.25f * Time.deltaTime);
 
         }
@@ -69,7 +69,7 @@ public class PlayerUnit : NetworkBehaviour
     }
 
     [ClientRpc]
-    void RpcFixPosition( Vector3 newPosition)
+    void RpcFixPosition(Vector3 newPosition)
     {
         transform.position = newPosition;
     }

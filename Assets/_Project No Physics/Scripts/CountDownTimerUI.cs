@@ -26,6 +26,6 @@ public class CountDownTimerUI : MonoBehaviour
                 return;
             }
         }
-        text.text = gameManager.TimeLeft.ToString();
+        text.text = gameManager.TimeLeft.ToString("#.00");
     }
 }

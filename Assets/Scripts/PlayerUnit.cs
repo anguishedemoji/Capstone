@@ -21,7 +21,7 @@ public class PlayerUnit : NetworkBehaviour {
         //}
 
         rb = GetComponent<Rigidbody>();
-
+        Debug.Log(rb);
     }
 
     Vector3 velocity;
@@ -34,7 +34,7 @@ public class PlayerUnit : NetworkBehaviour {
     // This is a constantly updated value about our latency to the server
     // i.e. how many second it takes for us to receive a one-way message
     // TODO: This should probably be something we get from the PlayerConnectionObject
-    float ourLatency;  
+    //float ourLatency;  
 
     // This higher this value, the faster our local position will match the best guess position
     float latencySmoothingFactor = 10;
@@ -132,6 +132,10 @@ public class PlayerUnit : NetworkBehaviour {
         transform.position = p;
         velocity = v;
 
+        //print("transform.position: " + transform.position);
+        //print("velocity: " + velocity);
+        Debug.Log("rb.velocity: " + rb.velocity);
+
         // If we know what our current latency is, we could do something like this:
         //transform.position = p + (v * (ourLatency));
 
@@ -147,25 +151,28 @@ public class PlayerUnit : NetworkBehaviour {
 
         if( hasAuthority )
         {
+            //print("has authority");
             // Hey, this is my own object. I "should" already have the most accurate
             // position/velocity (possibly more "Accurate") than the server
             // Depending on the game, I MIGHT want to change to patch this info
             // from the server, even though that might look a little wonky to the user.
 
             // Let's assume for now that we're just going to ignore the message from the server.
-            return;
+            //return;
         }
 
         // I am a non-authoratative client, so I definitely need to listen to the server.
 
         // If we know what our current latency is, we could do something like this:
         //  transform.position = p + (v * (ourLatency))
-
-        //transform.position = p;
+        
+        transform.position = p;
 
         velocity = v;
-        bestGuessPosition = p + (velocity * (ourLatency));
-
+        bestGuessPosition = p + velocity;
+        //print("best guess position: " + bestGuessPosition);
+        //print("velocity: " + velocity);
+        //print("forward: " + transform.forward);
 
         // Now position of player one is as close as possible on all player's screens
 

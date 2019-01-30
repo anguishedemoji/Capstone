@@ -21,11 +21,20 @@ public class PlayerCube : NetworkBehaviour
             return;
         }
 
-        if (Input.GetKey("left")) {
+
+        GetMovementInput();
+
+    }
+
+    void GetMovementInput()
+    {
+        if (Input.GetKey("left"))
+        {
             transform.Translate(-(Time.deltaTime * moveSpeed), 0, 0, null);
         }
 
-        if (Input.GetKey("right")) {
+        if (Input.GetKey("right"))
+        {
             transform.Translate((Time.deltaTime * moveSpeed), 0, 0, null);
         }
 
@@ -38,6 +47,5 @@ public class PlayerCube : NetworkBehaviour
         {
             transform.Translate(0, 0, (Time.deltaTime * moveSpeed), null);
         }
-
     }
 }

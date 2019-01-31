@@ -14,6 +14,8 @@ public class PlayerConnectionObject : NetworkBehaviour {
             return;
         }
 
+        print("this is the local player");
+
         // Since the PlayerConnectionObject is invisible and not part of the world,
         // give me something physical to move around!
 

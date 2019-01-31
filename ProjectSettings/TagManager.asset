@@ -38,6 +38,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Text
+    uniqueID: 3270718547
+    locked: 0
+  - name: Canvas
+    uniqueID: 3419298505
+    locked: 0
+  - name: PlayerUnitPrefab
+    uniqueID: 579088849
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

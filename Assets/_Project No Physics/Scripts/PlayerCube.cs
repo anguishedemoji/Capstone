@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityStandardAssets.CrossPlatformInput;
-using System;
 
 
 public class PlayerCube : NetworkBehaviour
@@ -14,9 +12,10 @@ public class PlayerCube : NetworkBehaviour
 
     [SyncVar]
     Vector3 serverPosition;
+
+    [SyncVar]
+    Quaternion serverplayerRotation;
     Vector3 serverPositionSmoothVelocity;
-
-
 
 
     void Start()
@@ -30,12 +29,13 @@ public class PlayerCube : NetworkBehaviour
 
         if (hasAuthority == false)
         {
-
+            transform.rotation = serverplayerRotation;
             transform.position = Vector3.SmoothDamp(
                 transform.position,
                 serverPosition,
                 ref serverPositionSmoothVelocity,
                 0.25f);
+
             return;
         }
 
@@ -86,18 +86,17 @@ public class PlayerCube : NetworkBehaviour
         direction.y = 0.0f;
 
 
-
-
         transform.Translate(direction.x, direction.y, direction.z, null);
-        CmdUpdatePosition(transform.position);
+        CmdUpdatePosition(transform.position, transform.rotation);
         return;
     }
 
     [Command]
-    void CmdUpdatePosition(Vector3 newPosition)
+    void CmdUpdatePosition(Vector3 newPosition, Quaternion rotation)
     {
         //IF Illegal Position update with RpcFixPosition
 
         serverPosition = newPosition;
+        serverplayerRotation = rotation;
     }
 }

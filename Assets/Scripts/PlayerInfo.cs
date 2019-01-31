@@ -10,14 +10,18 @@ public class PlayerInfo : MonoBehaviour
 
     // Player info
     public int playerHealth;
+    public int playerScore;
 
     // UI Elements
     public Text healthText;
+    public Text scoreText;
 
     void Start()
     {
         playerHealth = rnd.Next(1, 101);
+        playerScore = rnd.Next(1, 10001);
         setHealthText();
+        setScoreText();
     }
 
     void Update()
@@ -25,9 +29,14 @@ public class PlayerInfo : MonoBehaviour
 
     }
 
-    // Create text string to be displayed in UI
+    // Create text strings to be displayed in UI
     void setHealthText()
     {
         healthText.text = "Health: " + playerHealth.ToString();
+    }
+
+    void setScoreText()
+    {
+        scoreText.text = "Score: " + playerScore.ToString();
     }
 }

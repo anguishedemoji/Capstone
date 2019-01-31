@@ -4,18 +4,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 
-    namespace UnityStandardAssets.Characters.FirstPerson { 
+
 public class PlayerCube : NetworkBehaviour
 {
     public float moveSpeed;
     public float mouseSpeed;
     private Camera cam;
 
-        public MouseLook mouseLook = new MouseLook();
 
-
-
-        [SyncVar]
+    [SyncVar]
     Vector3 serverPosition;
 
     [SyncVar]
@@ -52,6 +49,7 @@ public class PlayerCube : NetworkBehaviour
 
         float X = Input.GetAxis("Mouse X") * mouseSpeed;
         float Y = Input.GetAxis("Mouse Y") * mouseSpeed;
+        cam.transform.Rotate(-Y, 0, 0);
 
         transform.Rotate(0, X, 0);
 
@@ -79,15 +77,16 @@ public class PlayerCube : NetworkBehaviour
             //transform.Translate((Time.deltaTime * moveSpeed), 0, 0, null);
         }
 
-        //down
+        //backwards
         if (Input.GetKey(KeyCode.S))
         {
             direction = cam.transform.TransformDirection(0, 0, -(Time.deltaTime * moveSpeed));
 
             //transform.Translate(0, 0, -(Time.deltaTime * moveSpeed), null);
         }
+        
 
-        //up
+        //forwards
         if (Input.GetKey(KeyCode.W))
         {
             direction = cam.transform.TransformDirection(0, 0, (Time.deltaTime * moveSpeed));
@@ -96,6 +95,19 @@ public class PlayerCube : NetworkBehaviour
         }
 
         direction.y = 0.0f;
+
+        // Vertical movement upwards (+Y direction)
+        if (Input.GetKey(KeyCode.Q)) 
+        {
+            transform.Translate(0, (Time.deltaTime * moveSpeed), 0, null);
+        }
+
+        // Vertical movement downwards (-Y direction)
+        if (Input.GetKey(KeyCode.E)) 
+        {
+            transform.Translate(0, -(Time.deltaTime * moveSpeed), 0, null);
+        }
+
 
 
         transform.Translate(direction.x, direction.y, direction.z, null);
@@ -111,5 +123,4 @@ public class PlayerCube : NetworkBehaviour
         serverPosition = newPosition;
         serverplayerRotation = rotation;
     }
-}
 }

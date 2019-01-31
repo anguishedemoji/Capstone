@@ -4,13 +4,18 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 
+    namespace UnityStandardAssets.Characters.FirstPerson { 
 public class PlayerCube : NetworkBehaviour
 {
     public float moveSpeed;
     public float mouseSpeed;
     private Camera cam;
 
-    [SyncVar]
+        public MouseLook mouseLook = new MouseLook();
+
+
+
+        [SyncVar]
     Vector3 serverPosition;
 
     [SyncVar]
@@ -20,6 +25,7 @@ public class PlayerCube : NetworkBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         cam = GetComponentInChildren<Camera>();
         cam.enabled = false;
     }
@@ -48,6 +54,12 @@ public class PlayerCube : NetworkBehaviour
         float Y = Input.GetAxis("Mouse Y") * mouseSpeed;
 
         transform.Rotate(0, X, 0);
+
+        //escape mouse lock
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
 
         //left
         if (Input.GetKey(KeyCode.A))
@@ -99,4 +111,5 @@ public class PlayerCube : NetworkBehaviour
         serverPosition = newPosition;
         serverplayerRotation = rotation;
     }
+}
 }

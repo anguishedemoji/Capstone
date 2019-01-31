@@ -8,8 +8,10 @@ using UnityEngine.Networking;
 public class PlayerCube : NetworkBehaviour
 {
     public float moveSpeed;
+    public float verticalMoveSpeed = 2.0f;
     public float mouseSpeed;
     private Camera cam;
+    private CharacterController controller;
 
 
     [SyncVar]
@@ -25,6 +27,8 @@ public class PlayerCube : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         cam = GetComponentInChildren<Camera>();
         cam.enabled = false;
+
+        controller = GetComponent<CharacterController>();
     }
 
     void Update()
@@ -59,58 +63,22 @@ public class PlayerCube : NetworkBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
 
-        //left
-        if (Input.GetKey(KeyCode.A))
-        {
-
-            direction = cam.transform.TransformDirection(-(Time.deltaTime * moveSpeed), 0, 0);
-
-
-            //transform.Translate(-(Time.deltaTime * moveSpeed), 0, 0, null);
-        }
-
-        //right
-        if (Input.GetKey(KeyCode.D))
-        {
-            direction = cam.transform.TransformDirection((Time.deltaTime * moveSpeed), 0, 0);
-
-            //transform.Translate((Time.deltaTime * moveSpeed), 0, 0, null);
-        }
-
-        //backwards
-        if (Input.GetKey(KeyCode.S))
-        {
-            direction = cam.transform.TransformDirection(0, 0, -(Time.deltaTime * moveSpeed));
-
-            //transform.Translate(0, 0, -(Time.deltaTime * moveSpeed), null);
-        }
-        
-
-        //forwards
-        if (Input.GetKey(KeyCode.W))
-        {
-            direction = cam.transform.TransformDirection(0, 0, (Time.deltaTime * moveSpeed));
-
-            //transform.Translate(0, 0, (Time.deltaTime * moveSpeed), null);
-        }
-
-        direction.y = 0.0f;
+        direction = new Vector3(-(Input.GetAxis("Horizontal")), 0.0f, -(Input.GetAxis("Vertical")));
+        direction = transform.TransformDirection(direction);
 
         // Vertical movement upwards (+Y direction)
-        if (Input.GetKey(KeyCode.Q)) 
+        if (Input.GetKey(KeyCode.Space)) 
         {
-            transform.Translate(0, (Time.deltaTime * moveSpeed), 0, null);
+            direction.y = verticalMoveSpeed;
         }
 
-        // Vertical movement downwards (-Y direction)
-        if (Input.GetKey(KeyCode.E)) 
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            transform.Translate(0, -(Time.deltaTime * moveSpeed), 0, null);
+            direction.y = -verticalMoveSpeed;
         }
+        direction *= moveSpeed;
+        controller.Move(direction * Time.deltaTime);
 
-
-
-        transform.Translate(direction.x, direction.y, direction.z, null);
         CmdUpdatePosition(transform.position, transform.rotation);
         return;
     }

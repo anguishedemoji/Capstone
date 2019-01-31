@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &8691462075952642456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378630284350539504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d27a199289a24458536bb130aea876, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealth: 0
+  healthText: {fileID: 3192028649791036752}
 --- !u!1 &4320846237857817164
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,7 +43,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 309163509859060810}
+  - {fileID: 1378630284350539505}
   - {fileID: 7313489093740346501}
   - {fileID: 6555912600165731318}
   - {fileID: 3343886574507580723}
@@ -83,6 +97,85 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!1 &5224797265349316256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6674610748898850916}
+  - component: {fileID: 1688512913493405903}
+  - component: {fileID: 3192028649791036752}
+  m_Layer: 5
+  m_Name: Health Display
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6674610748898850916
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5224797265349316256}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6555912600165731318}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.50200003, y: 1}
+  m_AnchorMax: {x: 0.50200003, y: 1}
+  m_AnchoredPosition: {x: 0, y: -56}
+  m_SizeDelta: {x: 200, y: 60}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1688512913493405903
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5224797265349316256}
+  m_CullTransparentMesh: 0
+--- !u!114 &3192028649791036752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5224797265349316256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 45
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Health: '
 --- !u!1001 &309163509859060800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184,15 +277,15 @@ PrefabInstance:
     - target: {fileID: 758793814, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
       propertyPath: cam
       value: 
-      objectReference: {fileID: 309163509859060814}
+      objectReference: {fileID: 309163508115894743}
     - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
       propertyPath: Camera
       value: 
-      objectReference: {fileID: 309163509859060814}
+      objectReference: {fileID: 309163508115894743}
     - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
       propertyPath: rigidbodyFirstPersonController
       value: 
-      objectReference: {fileID: 309163509859060835}
+      objectReference: {fileID: 309163509136214550}
     - target: {fileID: 5112653552180830080, guid: 4e624b2dcce82f04283274566fb48124,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -205,25 +298,31 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 8231b2f2af5da9c428010c919d63ae59, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
---- !u!4 &309163509859060810 stripped
+--- !u!1 &1378630284350539504 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1687651815810058928, guid: 4e624b2dcce82f04283274566fb48124,
+    type: 3}
+  m_PrefabInstance: {fileID: 309163509859060800}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1378630284350539505 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1687651815810058929, guid: 4e624b2dcce82f04283274566fb48124,
     type: 3}
   m_PrefabInstance: {fileID: 309163509859060800}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &309163509859060835 stripped
+--- !u!114 &309163509136214550 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 758793814, guid: 4e624b2dcce82f04283274566fb48124,
     type: 3}
   m_PrefabInstance: {fileID: 309163509859060800}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1378630284350539504}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81c9795a96c094f4cbde4d65546aa9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!20 &309163509859060814 stripped
+--- !u!20 &309163508115894743 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 1751874967, guid: 4e624b2dcce82f04283274566fb48124,
     type: 3}
@@ -587,7 +686,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 309163509859060814}
+      objectReference: {fileID: 309163508115894743}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4c1c22bddc4a49a3b285eef46cd3a6a, type: 3}
 --- !u!224 &6555912600165731318 stripped

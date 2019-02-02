@@ -25,4 +25,9 @@ public class PlayerLaser : MonoBehaviour
         laserLineRenderer.SetPosition(1, origin);
         laserLineRenderer.enabled = true;
     }
+
+    private void hideLaser()
+    {
+        laserLineRenderer.enabled = false;
+    }
 }

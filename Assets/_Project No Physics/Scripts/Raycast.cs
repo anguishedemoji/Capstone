@@ -8,13 +8,15 @@ public class Raycast : MonoBehaviour
     public Transform cam;
     private GameObject canvas;
     private RawImage reticle;
+    private PlayerLaser playerLaser;
     Ray ray;
 
     void Start()
     {
-        canvas = GameObject.Find("reticle");
-        reticle = canvas.GetComponent<RawImage>();
-        Debug.Log(canvas);
+        //canvas = GameObject.Find("reticle");
+        //reticle = canvas.GetComponent<RawImage>();
+        //Debug.Log(canvas);
+        playerLaser = GetComponent<PlayerLaser>();
 
     }
 
@@ -39,13 +41,28 @@ public class Raycast : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Shooting Player");
+                playerLaser.FireLaser(ray.origin, hit.point);
             }
 
-            if (Physics.Raycast(ray, out hit, 100, inanimateMask))
+        }
+
+        if (Physics.Raycast(ray, out hit, 100, inanimateMask))
+        {
+            //reticle.color = Color.red;
+            Debug.Log("Hitting inanimate object");
+            Debug.Log(hit);
+            if (Input.GetMouseButtonDown(0))
             {
-                reticle.color = Color.red;
-                Debug.Log("Hitting inanimate object");
+                Debug.Log("Shooting Object");
+                playerLaser.FireLaser(ray.origin, hit.point);
             }
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Shooting Nothing");
+            if(Physics.Raycast(ray, out hit, 100))
+                playerLaser.FireLaser(ray.origin, hit.point);
         }
 
 

@@ -14,22 +14,12 @@ public class PlayerLaser : MonoBehaviour
         laserLineRenderer.enabled = false;      // initialize line renderer as not visible
     }
 
-    void Update()
-    {
-        
-    }
-
     public IEnumerator FireLaser(Vector3 origin, Vector3 target)
     {
         laserLineRenderer.SetPosition(0, target);
         laserLineRenderer.SetPosition(1, origin);
         laserLineRenderer.enabled = true;       // show line renderer that represents laser
-        yield return new WaitForSeconds(.25f);  // show laser for this many seconds, then hide
-        hideLaser();
-    }
-
-    private void hideLaser()
-    {
-        laserLineRenderer.enabled = false;
+        yield return new WaitForSeconds(.25f);  // show laser for this many seconds...
+        laserLineRenderer.enabled = false;      // ...then hide it
     }
 }

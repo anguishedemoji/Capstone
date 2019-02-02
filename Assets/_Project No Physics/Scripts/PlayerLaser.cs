@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerLaser : MonoBehaviour
 {
-    public GameObject laserLineRendererPrefab;
+    public GameObject laserLineRendererPrefab;  // prefab that holdes line renderer component
     private LineRenderer laserLineRenderer;
 
     void Start()
     {
         GameObject laserLineRendererObject = Instantiate(laserLineRendererPrefab);
         laserLineRenderer = laserLineRendererObject.GetComponent<LineRenderer>();
-        laserLineRenderer.enabled = false;
+        laserLineRenderer.enabled = false;      // initialize line renderer as not visible
     }
 
     void Update()
@@ -19,11 +19,13 @@ public class PlayerLaser : MonoBehaviour
         
     }
 
-    public void FireLaser(Vector3 origin, Vector3 target)
+    public IEnumerator FireLaser(Vector3 origin, Vector3 target)
     {
         laserLineRenderer.SetPosition(0, target);
         laserLineRenderer.SetPosition(1, origin);
-        laserLineRenderer.enabled = true;
+        laserLineRenderer.enabled = true;       // show line renderer that represents laser
+        yield return new WaitForSeconds(.25f);  // show laser for this many seconds, then hide
+        hideLaser();
     }
 
     private void hideLaser()

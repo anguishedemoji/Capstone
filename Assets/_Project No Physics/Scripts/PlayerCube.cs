@@ -49,8 +49,6 @@ public class PlayerCube : NetworkBehaviour
 
         cam.enabled = true;
 
-        Vector3 direction = new Vector3(0, 0, 0);
-
         float X = Input.GetAxis("Mouse X") * mouseSpeed;
         float Y = Input.GetAxis("Mouse Y") * mouseSpeed;
         cam.transform.Rotate(-Y, 0, 0);
@@ -63,7 +61,7 @@ public class PlayerCube : NetworkBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
 
-        direction = new Vector3(-(Input.GetAxis("Horizontal")), 0.0f, -(Input.GetAxis("Vertical")));
+        Vector3 direction = new Vector3(-(Input.GetAxis("Horizontal")), 0.0f, -(Input.GetAxis("Vertical")));
         direction = transform.TransformDirection(direction);
 
         // Vertical movement upwards (+Y direction)

@@ -31,23 +31,33 @@ public class Raycast : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Shooting Player");
+              // Debug.Log("Shooting Player");
                 playerLaser.FireLaser(ray.origin, hit.point);
             }
         }
 
         if (Physics.Raycast(ray, out hit, 100, inanimateMask))
         {
+<<<<<<< HEAD
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Shooting Object");
                 StartCoroutine(playerLaser.FireLaser(ray.origin, hit.point));
+=======
+            //reticle.color = Color.red;
+           // Debug.Log("Hitting inanimate object");
+           // Debug.Log(hit);
+            if (Input.GetMouseButtonDown(0))
+            {
+               // Debug.Log("Shooting Object");
+                playerLaser.FireLaser(ray.origin, hit.point);
+>>>>>>> newMerge
             }
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Shooting Nothing");
+           // Debug.Log("Shooting Nothing");
             if(Physics.Raycast(ray, out hit, 100))
             {
                 StartCoroutine(playerLaser.FireLaser(ray.origin, hit.point));

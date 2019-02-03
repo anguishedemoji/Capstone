@@ -30,29 +30,33 @@ public class PlayerAction : NetworkBehaviour
         }
     }
 
-    // server-side creation of laser
+    // Create laser on server
     [Command]
     void CmdCreateLaser(Vector3 origin, Vector3 target)
     {
-        StartCoroutine(FireLaser(origin, target));
-        RpcCreateLaser(origin, target);
+        StartCoroutine(FireLaser(origin, target));  // create laser on server
+        RpcCreateLaser(origin, target);             // create lasers on clients
     }
 
+    // Create laser on client
     [ClientRpc]
     void RpcCreateLaser(Vector3 origin, Vector3 target)
     {
+        if (isServer == true)   // server already has its own laser
+            return;
         StartCoroutine(FireLaser(origin, target));
     }
 
     // Async method for creating and destroying visible laser
     private IEnumerator FireLaser(Vector3 origin, Vector3 target)
     {
+        // Instantiate prefab object containing LineRenderer component
         GameObject laserLineRendererObject = Object.Instantiate(laserLineRendererPrefab);
+        // Get the new instance's LineRenderer component
         LineRenderer laserLineRenderer = laserLineRendererObject.GetComponent<LineRenderer>();
         laserLineRenderer.SetPosition(0, target);
         laserLineRenderer.SetPosition(1, origin);
-        laserLineRenderer.enabled = true;       // show line renderer that represents laser
-        yield return new WaitForSeconds(.25f);  // for this many seconds
-        Destroy(laserLineRendererObject);      // ...then destroy it and its associated game object
+        yield return new WaitForSeconds(.25f);  // Show rendered line for this many seconds...
+        Destroy(laserLineRendererObject);       // ...then destroy it and its associated game object
     }
 }

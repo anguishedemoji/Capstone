@@ -5,50 +5,80 @@ using UnityEngine.Networking;
 
 public class PlayerAction : NetworkBehaviour
 {
-    private Transform cam;
     public GameObject laserLineRendererPrefab;
+
+    private Transform cam;
+    private PlayerInfo playerInfo;
 
     void Start()
     {
-        // Get position of player camera
-        cam = GetComponentInChildren<Camera>().transform;
+        cam = GetComponentInChildren<Camera>().transform;   // Get position of player camera
+        playerInfo = GetComponent<PlayerInfo>();            // Get reference to player's info
+        Debug.Log("Player: " + netId.Value + " Health: " + playerInfo.playerHealth);
     }
 
     void Update()
     {
-        // Fire laser
+        // Fire laser if mouse clicked & we have authority over this player
         if (Input.GetMouseButtonDown(0) && hasAuthority == true)
         {
-            // Get origin of ray based on player heading
-            Ray ray = new Ray(cam.position, cam.forward);
-            RaycastHit hit;
+            CmdCreateLaser();  // create instance on server
+        }
+    }
 
-            if (Physics.Raycast(ray, out hit, 100))
+    // Create visible laser beam on server
+    [Command]
+    void CmdCreateLaser()
+    {
+        // Get origin of ray based on player heading
+        Ray ray = new Ray(cam.position, cam.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 200))
+        {
+            RpcCreateLaser(ray.origin, hit.point);              // create visible lasers on clients
+            if (hit.transform.gameObject.name == "CapGuy")      // if ray hits a player
             {
-                CmdCreateLaser(ray.origin, hit.point);  // create instance on server
+                uint hitPlayerId = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>().netId.Value;
+                print("player hit: " + hitPlayerId);
+                CmdRegisterClientHit(hitPlayerId);              // register hit on player
             }
         }
     }
 
-    // Create laser on server
+    // Send hit information to all clients
     [Command]
-    void CmdCreateLaser(Vector3 origin, Vector3 target)
+    void CmdRegisterClientHit(uint hitPlayerId)
     {
-        StartCoroutine(FireLaser(origin, target));  // create laser on server
-        RpcCreateLaser(origin, target);             // create lasers on clients
+        Debug.Log("Server Registering Hit");
+        RpcRegisterHit(hitPlayerId);
     }
 
-    // Create laser on client
+    // Create visible laser beam on client
     [ClientRpc]
-    void RpcCreateLaser(Vector3 origin, Vector3 target)
+    void RpcCreateLaser(Vector3 origin, Vector3 point)
     {
-        if (isServer == true)   // server already has its own laser
-            return;
-        StartCoroutine(FireLaser(origin, target));
+        StartCoroutine(CreateLaser(origin, point));
+    }
+
+    // Register hit on the appropriate player
+    [ClientRpc]
+    void RpcRegisterHit(uint hitPlayerId)
+    {
+        Debug.Log("this player's id: " + netId.Value);
+        Debug.Log("the hit player's id: " + hitPlayerId);
+        Debug.Log(playerInfo.playerHealth);
+        // if this player is the one hit by the raycast
+        if (netId.Value == hitPlayerId)
+        {
+            Debug.Log("Predecrement Health: " + playerInfo.playerHealth);
+            playerInfo.playerHealth -= 5;
+            Debug.Log(netId.Value + " Health : " + playerInfo.playerHealth);
+            transform.parent.gameObject.SetActive(false);
+        }
     }
 
     // Async method for creating and destroying visible laser
-    private IEnumerator FireLaser(Vector3 origin, Vector3 target)
+    private IEnumerator CreateLaser(Vector3 origin, Vector3 target)
     {
         // Instantiate prefab object containing LineRenderer component
         GameObject laserLineRendererObject = Object.Instantiate(laserLineRendererPrefab);

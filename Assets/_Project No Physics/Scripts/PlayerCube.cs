@@ -13,7 +13,6 @@ public class PlayerCube : NetworkBehaviour
     private Camera cam;
     private CharacterController controller;
 
-
     [SyncVar]
     Vector3 serverPosition;
 
@@ -33,7 +32,6 @@ public class PlayerCube : NetworkBehaviour
 
     void Update()
     {
-
         if (hasAuthority == false)
         {
             transform.rotation = serverplayerRotation;
@@ -45,7 +43,6 @@ public class PlayerCube : NetworkBehaviour
 
             return;
         }
-
 
         cam.enabled = true;
 
@@ -61,6 +58,7 @@ public class PlayerCube : NetworkBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
 
+        // Get player movement input along X and Y axes
         Vector3 direction = new Vector3(-(Input.GetAxis("Horizontal")), 0.0f, -(Input.GetAxis("Vertical")));
         direction = transform.TransformDirection(direction);
 
@@ -70,6 +68,7 @@ public class PlayerCube : NetworkBehaviour
             direction.y = verticalMoveSpeed;
         }
 
+        // Vertical movement downwards (-Y direction)
         if (Input.GetKey(KeyCode.LeftShift))
         {
             direction.y = -verticalMoveSpeed;

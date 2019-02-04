@@ -16,7 +16,7 @@ public class PlayerAction : NetworkBehaviour
         cam = GetComponentInChildren<Camera>().transform;   // Get position of player camera
         playerInfo = GetComponent<PlayerInfo>();            // Get reference to player's info
         laserRange = 200;                                   // Initialize range of laser
-        Debug.Log("Player: " + netId.Value + " Health: " + playerInfo.playerHealth);
+        Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.playerHealth);
     }
 
     void Update()
@@ -28,7 +28,7 @@ public class PlayerAction : NetworkBehaviour
         }
     }
 
-    // Create visible laser beam on server
+    // Create visible laser beam on server, then determine if player was hit
     [Command]
     void CmdCreateLaser()
     {
@@ -41,9 +41,12 @@ public class PlayerAction : NetworkBehaviour
             RpcCreateLaser(ray.origin, hit.point);              // create visible lasers on clients
             if (hit.transform.gameObject.name == "CapGuy")      // if ray hits a player
             {
-                uint hitPlayerId = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>().netId.Value;
-                print("player hit: " + hitPlayerId);
-                CmdRegisterClientHit(hitPlayerId);              // register hit on player
+                // Get netId from CapGuy model's parent gameObject
+                NetworkIdentity hitPlayerIdentity = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>();
+                Debug.Log("Network Id: " + hitPlayerIdentity.netId);
+                PlayerCube localHitPlayer = NetworkServer.FindLocalObject(hitPlayerIdentity.netId).GetComponent<PlayerCube>();
+                Debug.Log("localHitPlayer: " + localHitPlayer);
+                localHitPlayer.GetComponent<PlayerAction>().RpcRegisterHit();
             }
         }
         // If raycast hits nothing
@@ -53,14 +56,6 @@ public class PlayerAction : NetworkBehaviour
         }
     }
 
-    // Send hit information to all clients
-    [Command]
-    void CmdRegisterClientHit(uint hitPlayerId)
-    {
-        Debug.Log("Server Registering Hit");
-        RpcRegisterHit(hitPlayerId);
-    }
-
     // Create visible laser beam on client
     [ClientRpc]
     void RpcCreateLaser(Vector3 origin, Vector3 point)
@@ -68,20 +63,12 @@ public class PlayerAction : NetworkBehaviour
         StartCoroutine(CreateLaser(origin, point));
     }
 
-    // Register hit on the appropriate player
+    // Register hit on appropriate player
     [ClientRpc]
-    void RpcRegisterHit(uint hitPlayerId)
+    public void RpcRegisterHit()
     {
-        Debug.Log("this player's id: " + netId.Value);
-        Debug.Log("the hit player's id: " + hitPlayerId);
-        // if this player is the one hit by the raycast
-        if (netId.Value == hitPlayerId)
-        {
-            Debug.Log("Hit player registering hit");
-            //playerInfo.playerHealth -= 5;
-            Debug.Log(netId.Value + " Health : " + playerInfo.playerHealth);
-            transform.parent.gameObject.SetActive(false);
-        }
+        playerInfo.playerHealth -= 5;
+        Debug.Log("Player Health Decremented. Health: " + playerInfo.playerHealth);
     }
 
     // Async method for creating and destroying visible laser

@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class PlayerAction : NetworkBehaviour
 {
     public GameObject laserLineRendererPrefab;
+    public int laserRange;
 
     private Transform cam;
     private PlayerInfo playerInfo;
@@ -14,6 +15,7 @@ public class PlayerAction : NetworkBehaviour
     {
         cam = GetComponentInChildren<Camera>().transform;   // Get position of player camera
         playerInfo = GetComponent<PlayerInfo>();            // Get reference to player's info
+        laserRange = 200;                                   // Initialize range of laser
         Debug.Log("Player: " + netId.Value + " Health: " + playerInfo.playerHealth);
     }
 
@@ -22,7 +24,7 @@ public class PlayerAction : NetworkBehaviour
         // Fire laser if mouse clicked & we have authority over this player
         if (Input.GetMouseButtonDown(0) && hasAuthority == true)
         {
-            CmdCreateLaser();  // create instance on server
+            CmdCreateLaser();  // create laser on server
         }
     }
 
@@ -33,7 +35,8 @@ public class PlayerAction : NetworkBehaviour
         // Get origin of ray based on player heading
         Ray ray = new Ray(cam.position, cam.forward);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 200))
+        // if raycast hits something
+        if (Physics.Raycast(ray, out hit, laserRange))
         {
             RpcCreateLaser(ray.origin, hit.point);              // create visible lasers on clients
             if (hit.transform.gameObject.name == "CapGuy")      // if ray hits a player
@@ -42,6 +45,11 @@ public class PlayerAction : NetworkBehaviour
                 print("player hit: " + hitPlayerId);
                 CmdRegisterClientHit(hitPlayerId);              // register hit on player
             }
+        }
+        // If raycast hits nothing
+        else
+        {
+            RpcCreateLaser(ray.origin, cam.forward * laserRange);
         }
     }
 
@@ -66,12 +74,11 @@ public class PlayerAction : NetworkBehaviour
     {
         Debug.Log("this player's id: " + netId.Value);
         Debug.Log("the hit player's id: " + hitPlayerId);
-        Debug.Log(playerInfo.playerHealth);
         // if this player is the one hit by the raycast
         if (netId.Value == hitPlayerId)
         {
-            Debug.Log("Predecrement Health: " + playerInfo.playerHealth);
-            playerInfo.playerHealth -= 5;
+            Debug.Log("Hit player registering hit");
+            //playerInfo.playerHealth -= 5;
             Debug.Log(netId.Value + " Health : " + playerInfo.playerHealth);
             transform.parent.gameObject.SetActive(false);
         }

@@ -16,7 +16,7 @@ public class PlayerAction : NetworkBehaviour
         cam = GetComponentInChildren<Camera>().transform;   // Get position of player camera
         playerInfo = GetComponent<PlayerInfo>();            // Get reference to player's info
         laserRange = 200;                                   // Initialize range of laser
-        Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.playerHealth);
+        Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.getHealth());
     }
 
     void Update()
@@ -46,7 +46,8 @@ public class PlayerAction : NetworkBehaviour
                 Debug.Log("Network Id: " + hitPlayerIdentity.netId);
                 PlayerCube localHitPlayer = NetworkServer.FindLocalObject(hitPlayerIdentity.netId).GetComponent<PlayerCube>();
                 Debug.Log("localHitPlayer: " + localHitPlayer);
-                localHitPlayer.GetComponent<PlayerAction>().RpcRegisterHit();
+                //localHitPlayer.GetComponent<PlayerAction>().RpcRegisterHit();
+                localHitPlayer.GetComponent<PlayerInfo>().RpcRegisterHit();
             }
         }
         // If raycast hits nothing
@@ -63,14 +64,30 @@ public class PlayerAction : NetworkBehaviour
         StartCoroutine(CreateLaser(origin, point));
     }
 
-    // Register hit on appropriate player
-    [ClientRpc]
-    public void RpcRegisterHit()
-    {
-        playerInfo.playerHealth -= 5;
-        Debug.Log("Player Health Decremented. Health: " + playerInfo.playerHealth);
-    }
+    //// Register hit on appropriate player
+    //[ClientRpc]
+    //public void RpcRegisterHit()
+    //{
+    //    playerInfo.takeDamage(50);
+    //    Debug.Log("Player Health Decremented. Health: " + playerInfo.getHealth());
 
+    //    if(playerInfo.getHealth() <= 0)
+    //    { 
+    //        StartCoroutine(Respawn());
+    //        playerInfo.setDefaults();
+    //    }
+    //}
+
+    //private IEnumerator Respawn()
+    //{
+    //    yield return new WaitForSeconds(3f);
+
+    //    Transform _spawn = NetworkManager.singleton.GetStartPosition();
+    //    transform.position = _spawn.position;
+    //    transform.rotation = _spawn.rotation;
+
+
+    //}
     // Async method for creating and destroying visible laser
     private IEnumerator CreateLaser(Vector3 origin, Vector3 target)
     {

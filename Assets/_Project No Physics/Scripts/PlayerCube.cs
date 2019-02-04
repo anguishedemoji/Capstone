@@ -63,13 +63,13 @@ public class PlayerCube : NetworkBehaviour
         direction = transform.TransformDirection(direction);
 
         // Vertical movement upwards (+Y direction)
-        if (Input.GetKey(KeyCode.Space)) 
+        if (Input.GetKey(KeyCode.Space) || Input.GetAxis("Mouse ScrollWheel") > 0) 
         {
             direction.y = verticalMoveSpeed;
         }
 
         // Vertical movement downwards (-Y direction)
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             direction.y = -verticalMoveSpeed;
         }

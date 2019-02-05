@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce0ac752bd66a4b23a98c5eb0e726800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4.95
+  moveSpeed: 15
   verticalMoveSpeed: 2
   mouseSpeed: 5
 --- !u!114 &63
@@ -212,6 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laserLineRendererPrefab: {fileID: 9048770725318471161, guid: 66516e3faff8143b3ab48ef76ee295c4,
     type: 3}
+  laserRange: 0
 --- !u!1 &17
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,14 +368,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
-      propertyPath: rigidbodyFirstPersonController
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 758793815, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
       propertyPath: m_UseGravity
       value: 0
@@ -401,6 +394,14 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
+      propertyPath: rigidbodyFirstPersonController
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5112653552180830080, guid: 4e624b2dcce82f04283274566fb48124,
         type: 3}

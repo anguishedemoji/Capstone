@@ -22,17 +22,21 @@ public class PlayerInfo : NetworkBehaviour
     [SyncVar]
     public int kills;
 
+    // Camera Shake
+    public float camShakeDuration = 0.2f;
+    public float camShakeMagnitude = 0.5f;
+    private Camera playerCam;
 
     // UI Elements
     public Text healthText;
     public Text scoreText;
 
-        Material newMaterial;
+    Material newMaterial;
     void Start()
     {
-        //playerHealth = rnd.Next(50, 101);
         playerHealth = maxHealth;
         playerScore = rnd.Next(1, 10001);
+        playerCam = GetComponentInChildren<Camera>();
         changeColor();
     }
 
@@ -85,6 +89,34 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerHealth -= damage;
         changeColor();
+        StartCoroutine(ShakeCam());
+    }
+
+    private IEnumerator ShakeCam()
+    {
+        float elapsed = 0.0f;
+
+        Vector3 originalCamPosition = playerCam.transform.localPosition;
+
+        while (elapsed < camShakeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float percentComplete = elapsed / camShakeDuration;
+            float damper = 1.0f - Mathf.Clamp(4.0f * percentComplete - 3.0f, 0.0f, 1.0f);
+
+            // Map value to [-1, 1]
+            float x = Random.value * 2.0f - 1.0f;
+            float y = Random.value * 2.0f - 1.0f;
+            x *= camShakeMagnitude * damper;
+            y *= camShakeMagnitude * damper;
+
+            playerCam.transform.localPosition = new Vector3(x, y, originalCamPosition.z);
+
+            yield return null;
+        }
+
+        playerCam.transform.localPosition = originalCamPosition;
     }
 
     public int getHealth ()

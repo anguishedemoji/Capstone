@@ -24,8 +24,11 @@ public class Teleport : MonoBehaviour
         if(other.name == "PlayerCube(Clone)")
         {
 
+            float x = endpoint.transform.forward.x;
+            float z = endpoint.transform.forward.z;
+            Vector3 newForward = new Vector3(x, 0, z);
         other.transform.position = endpoint.transform.position;
-            other.transform.forward = endpoint.transform.forward;
+            other.transform.forward = newForward;
         }
     }
 }

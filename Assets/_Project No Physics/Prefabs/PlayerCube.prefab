@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce0ac752bd66a4b23a98c5eb0e726800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4.95
+  moveSpeed: 11.95
   verticalMoveSpeed: 2
   mouseSpeed: 5
 --- !u!114 &63
@@ -301,16 +301,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 28}
     m_Modifications:
-    - target: {fileID: 1687651815810058928, guid: 4e624b2dcce82f04283274566fb48124,
-        type: 3}
-      propertyPath: m_Name
-      value: CapGuy
-      objectReference: {fileID: 0}
-    - target: {fileID: 1687651815810058928, guid: 4e624b2dcce82f04283274566fb48124,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 1687651815810058929, guid: 4e624b2dcce82f04283274566fb48124,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -365,6 +355,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687651815810058928, guid: 4e624b2dcce82f04283274566fb48124,
+        type: 3}
+      propertyPath: m_Name
+      value: CapGuy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687651815810058928, guid: 4e624b2dcce82f04283274566fb48124,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1751874962, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
       propertyPath: m_Layer
@@ -431,6 +431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 758793814, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
+    - {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
 --- !u!4 &1378630284350539505 stripped
 Transform:
@@ -451,16 +452,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 28}
     m_Modifications:
-    - target: {fileID: 1461103787487820957, guid: d4c1c22bddc4a49a3b285eef46cd3a6a,
-        type: 3}
-      propertyPath: m_Name
-      value: Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 1461103787487820957, guid: d4c1c22bddc4a49a3b285eef46cd3a6a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 1461103787487820953, guid: d4c1c22bddc4a49a3b285eef46cd3a6a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -565,6 +556,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1461103787487820957, guid: d4c1c22bddc4a49a3b285eef46cd3a6a,
+        type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1461103787487820957, guid: d4c1c22bddc4a49a3b285eef46cd3a6a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1461103786663602852, guid: d4c1c22bddc4a49a3b285eef46cd3a6a,
         type: 3}

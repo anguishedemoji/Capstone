@@ -6,26 +6,40 @@ using UnityEngine.Networking;
 public class PlayerAction : NetworkBehaviour
 {
     public GameObject laserLineRendererPrefab;
-    public int laserRange;
+    public int laserRange;                  // Range of laser
+    public float destroyLaserDelay;         // Time delay before destroying laser
+    public Vector3 laserOriginOffset;       // Offset to increase laser visibility
 
-    private Transform cam;
+    private Transform cam;                  // local camera transform
+    private Quaternion serverCamRotation;   // server camera rotation
     private PlayerInfo playerInfo;
 
     void Start()
     {
         cam = GetComponentInChildren<Camera>().transform;   // Get position of player camera
+        serverCamRotation = cam.rotation;                   // Initialize rotation of camera on server
         playerInfo = GetComponent<PlayerInfo>();            // Get reference to player's info
-        laserRange = 200;                                   // Initialize range of laser
+        laserOriginOffset = new Vector3(0, -.25f, 0);        // Lower origin of raycast so laser is visible
+        laserRange = 200;                                   
+        destroyLaserDelay = .25f;                           
         Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.getHealth());
     }
 
     void Update()
     {
+        if (hasAuthority == false)
+        {
+            cam.rotation = serverCamRotation;    // update camera's rotation to enable proper raycasts
+            return;
+        }
+
         // Fire laser if mouse clicked & we have authority over this player
         if (Input.GetMouseButtonDown(0) && hasAuthority == true)
         {
             CmdCreateLaser();  // create laser on server
         }
+
+        CmdUpdateCameraTransform(cam.rotation);
     }
 
     // Create visible laser beam on server, then determine if player was hit
@@ -33,7 +47,7 @@ public class PlayerAction : NetworkBehaviour
     void CmdCreateLaser()
     {
         // Get origin of ray based on player heading
-        Ray ray = new Ray(cam.position, cam.forward);
+        Ray ray = new Ray(cam.position + laserOriginOffset, cam.forward);
         RaycastHit hit;
         // if raycast hits something
         if (Physics.Raycast(ray, out hit, laserRange))
@@ -46,7 +60,6 @@ public class PlayerAction : NetworkBehaviour
                 Debug.Log("Network Id: " + hitPlayerIdentity.netId);
                 PlayerCube localHitPlayer = NetworkServer.FindLocalObject(hitPlayerIdentity.netId).GetComponent<PlayerCube>();
                 Debug.Log("localHitPlayer: " + localHitPlayer);
-                //localHitPlayer.GetComponent<PlayerAction>().RpcRegisterHit();
                 localHitPlayer.GetComponent<PlayerInfo>().RpcRegisterHit();
             }
         }
@@ -64,30 +77,6 @@ public class PlayerAction : NetworkBehaviour
         StartCoroutine(CreateLaser(origin, point));
     }
 
-    //// Register hit on appropriate player
-    //[ClientRpc]
-    //public void RpcRegisterHit()
-    //{
-    //    playerInfo.takeDamage(50);
-    //    Debug.Log("Player Health Decremented. Health: " + playerInfo.getHealth());
-
-    //    if(playerInfo.getHealth() <= 0)
-    //    { 
-    //        StartCoroutine(Respawn());
-    //        playerInfo.setDefaults();
-    //    }
-    //}
-
-    //private IEnumerator Respawn()
-    //{
-    //    yield return new WaitForSeconds(3f);
-
-    //    Transform _spawn = NetworkManager.singleton.GetStartPosition();
-    //    transform.position = _spawn.position;
-    //    transform.rotation = _spawn.rotation;
-
-
-    //}
     // Async method for creating and destroying visible laser
     private IEnumerator CreateLaser(Vector3 origin, Vector3 target)
     {
@@ -97,7 +86,13 @@ public class PlayerAction : NetworkBehaviour
         LineRenderer laserLineRenderer = laserLineRendererObject.GetComponent<LineRenderer>();
         laserLineRenderer.SetPosition(0, target);
         laserLineRenderer.SetPosition(1, origin);
-        yield return new WaitForSeconds(.25f);  // Show rendered line for this many seconds...
+        yield return new WaitForSeconds(destroyLaserDelay);  // Show rendered line for this many seconds...
         Destroy(laserLineRendererObject);       // ...then destroy it and its associated game object
+    }
+
+    [Command]
+    void CmdUpdateCameraTransform(Quaternion rotation)
+    {
+        serverCamRotation = rotation;
     }
 }

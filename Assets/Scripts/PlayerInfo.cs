@@ -27,16 +27,21 @@ public class PlayerInfo : NetworkBehaviour
     public Text healthText;
     public Text scoreText;
 
+        Material newMaterial;
     void Start()
     {
         //playerHealth = rnd.Next(50, 101);
         playerHealth = maxHealth;
         playerScore = rnd.Next(1, 10001);
+        changeColor();
     }
 
     void Update()
     {
-    
+        if (Input.GetMouseButtonDown(1))
+        {
+            takeDamage(25);
+        }
     }
 
     [ClientRpc]
@@ -79,6 +84,7 @@ public class PlayerInfo : NetworkBehaviour
     public void takeDamage(int damage)
     {
         playerHealth -= damage;
+        changeColor();
     }
 
     public int getHealth ()
@@ -102,5 +108,32 @@ public class PlayerInfo : NetworkBehaviour
     void setScoreText()
     {
         scoreText.text = "Score: " + playerScore.ToString();
+    }
+
+public void changeColor()
+{
+        float healthPercent = (float)playerHealth / maxHealth;
+        Debug.Log("playerHealth: " + playerHealth);
+        Debug.Log("maxHealth: " + maxHealth);
+        Debug.Log("healthPercent: " + healthPercent);
+        if (healthPercent > .75)
+        {
+        newMaterial = Resources.Load<Material>("HealthSkins/FullHealth");
+        }
+       else if (healthPercent <= .75 && healthPercent > .5)
+        {
+            newMaterial = Resources.Load<Material>("HealthSkins/75%Health");
+        }
+        else if (healthPercent <= .5 && healthPercent > .25)
+        {
+            newMaterial = Resources.Load<Material>("HealthSkins/50%Health");
+        }
+        else if (healthPercent <= .25)
+        {
+            newMaterial = Resources.Load<Material>("HealthSkins/25%Health");
+        }
+        transform.GetChild(0).GetChild(0).GetComponentInChildren<Renderer>().material = newMaterial;
+        transform.GetChild(0).GetChild(1).GetComponentInChildren<Renderer>().material = newMaterial;
+        GetComponentInChildren<Renderer>().material = newMaterial;
     }
 }

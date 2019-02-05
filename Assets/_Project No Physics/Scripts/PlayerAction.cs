@@ -6,8 +6,9 @@ using UnityEngine.Networking;
 public class PlayerAction : NetworkBehaviour
 {
     public GameObject laserLineRendererPrefab;
-    public int laserRange;
-    public float destroyLaserDelay;
+    public int laserRange;                  // Range of laser
+    public float destroyLaserDelay;         // Time delay before destroying laser
+    public Vector3 laserOriginOffset;       // Offset to increase laser visibility
 
     private Transform cam;                  // local camera transform
     private Quaternion serverCamRotation;   // server camera rotation
@@ -18,8 +19,9 @@ public class PlayerAction : NetworkBehaviour
         cam = GetComponentInChildren<Camera>().transform;   // Get position of player camera
         serverCamRotation = cam.rotation;                   // Initialize rotation of camera on server
         playerInfo = GetComponent<PlayerInfo>();            // Get reference to player's info
-        laserRange = 200;                                   // Initialize range of laser
-        destroyLaserDelay = .25f;                           // Initialize time delay before destroying laser
+        laserOriginOffset = new Vector3(0, -.25f, 0);        // Lower origin of raycast so laser is visible
+        laserRange = 200;                                   
+        destroyLaserDelay = .25f;                           
         Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.getHealth());
     }
 
@@ -45,7 +47,7 @@ public class PlayerAction : NetworkBehaviour
     void CmdCreateLaser()
     {
         // Get origin of ray based on player heading
-        Ray ray = new Ray(cam.position, cam.forward);
+        Ray ray = new Ray(cam.position + laserOriginOffset, cam.forward);
         RaycastHit hit;
         // if raycast hits something
         if (Physics.Raycast(ray, out hit, laserRange))

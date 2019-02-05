@@ -11,17 +11,9 @@ public class PlayerInfo : NetworkBehaviour
 
     // Player info
     [SyncVar]
-    private int maxHealth = 100;
-
-    [SyncVar]
-    private int playerHealth;
-
+    public int playerHealth;
     [SyncVar]
     public int playerScore;
-
-    [SyncVar]
-    public int kills;
-
 
     // UI Elements
     public Text healthText;
@@ -29,61 +21,18 @@ public class PlayerInfo : NetworkBehaviour
 
     void Start()
     {
-        //playerHealth = rnd.Next(50, 101);
-        playerHealth = maxHealth;
+        playerHealth = rnd.Next(50, 101);
         playerScore = rnd.Next(1, 10001);
     }
 
     void Update()
     {
-    
-    }
 
-    [ClientRpc]
-    public void RpcRegisterHit()
-    {
-        takeDamage(50);
-        Debug.Log("Player Health Decremented. Health: " + getHealth());
-
-        if (getHealth() <= 0)
-        {
-            StartCoroutine(Respawn());
-            setDefaults();
-        }
-    }
-       
-
-
-    private IEnumerator Respawn()
-    {
-        yield return new WaitForSeconds(3f);
-
-        Transform _spawn = NetworkManager.singleton.GetStartPosition();
-        transform.position = _spawn.position;
-        transform.rotation = _spawn.rotation;
-
-
-    }
-
-    public void setDefaults ()
-    {
-        playerHealth = maxHealth;
-        kills = 0;
     }
 
     public void setHealth(int Val)
     {
         playerHealth += Val;
-    }
-
-    public void takeDamage(int damage)
-    {
-        playerHealth -= damage;
-    }
-
-    public int getHealth ()
-    {
-        return playerHealth;
     }
 
     // GUI 

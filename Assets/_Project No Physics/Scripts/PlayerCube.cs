@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+
+
 public class PlayerCube : NetworkBehaviour
 {
     public float moveSpeed;
     public float verticalMoveSpeed = 2.0f;
     public float mouseSpeed;
-
     private Camera cam;
     private CharacterController controller;
 

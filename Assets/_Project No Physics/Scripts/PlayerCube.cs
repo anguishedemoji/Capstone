@@ -87,4 +87,22 @@ public class PlayerCube : NetworkBehaviour
         serverPosition = newPosition;
         serverplayerRotation = rotation;
     }
+
+    public void DeathMove()
+    {
+        Debug.Log("DEEEEEEEEEEEEATHHH MOOOOOOOOOOOOVE");
+        Vector3 newPosition = new Vector3(serverPosition.x, 0.0f, serverPosition.z);
+        Quaternion newRotation = Quaternion.Euler(90f, 0.0f, 0.0f);
+
+
+        //Vector3 direction = new Vector3(serverPosition.x, 0.0f, serverPosition.z);
+        //direction = transform.TransformDirection(direction);
+        //direction *= moveSpeed;
+        //controller.Move(direction * Time.deltaTime);
+
+        transform.position = newPosition;
+        transform.rotation = newRotation;
+
+        CmdUpdatePosition(transform.position, transform.rotation);
+    }
 }

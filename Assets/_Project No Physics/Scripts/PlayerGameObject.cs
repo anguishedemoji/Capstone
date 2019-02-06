@@ -17,7 +17,6 @@ public class PlayerGameObject : NetworkBehaviour
     Quaternion serverplayerRotation;
     Vector3 serverPositionSmoothVelocity;
 
-
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;

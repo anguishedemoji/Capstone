@@ -32,7 +32,5 @@ public class PlayerConnectionManager : NetworkBehaviour
         //Give Authority over Player
         NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
     }
-
-
 }
 

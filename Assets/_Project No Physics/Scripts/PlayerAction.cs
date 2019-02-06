@@ -58,8 +58,13 @@ public class PlayerAction : NetworkBehaviour
                 // Get netId from CapGuy model's parent gameObject
                 NetworkIdentity hitPlayerIdentity = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>();
                 PlayerGameObject localHitPlayer = NetworkServer.FindLocalObject(hitPlayerIdentity.netId).GetComponent<PlayerGameObject>();
-                localHitPlayer.GetComponent<PlayerInfo>().RpcRegisterHit(); // register hit on other player
-                playerInfo.IncreaseScore(scorePerHit);                      // increase points for this player
+
+                //Checks if death If Death Doesnt Allow for adding more damage and getting more points
+                if(localHitPlayer.GetComponent<PlayerInfo>().GetDeath() == false) 
+                { 
+                    localHitPlayer.GetComponent<PlayerInfo>().RpcRegisterHit(); // register hit on other player
+                    playerInfo.IncreaseScore(scorePerHit);                      // increase points for this player
+                }
             }
         }
         // If raycast hits nothing

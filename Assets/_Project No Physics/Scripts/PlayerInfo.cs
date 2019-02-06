@@ -7,16 +7,18 @@ using UnityEngine.UI;
 public class PlayerInfo : NetworkBehaviour
 {
     // Player info
-    [SyncVar]
     private int maxHealth = 100;
 
-    [SyncVar]
+    //[SyncVar]  TODO: Change this RPC to SynVar
     private int playerHealth;
+
+    [SyncVar]
+    private bool death;
 
     [SyncVar]
     public int playerScore = 0;
 
-    [SyncVar]
+    //[SyncVar]
     public int kills;
 
     // Camera Shake
@@ -35,6 +37,7 @@ public class PlayerInfo : NetworkBehaviour
 
     void Start()
     {
+        SetDeath(false);
         playerHealth = maxHealth;
         playerCam = GetComponentInChildren<Camera>();
         playerObject = GetComponent<PlayerGameObject>();
@@ -43,7 +46,7 @@ public class PlayerInfo : NetworkBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKey(KeyCode.K))
         {
             RpcRegisterHit();
         }
@@ -58,8 +61,9 @@ public class PlayerInfo : NetworkBehaviour
 
         if (GetHealth() <= 0)
         {
+            SetDeath(true);
             ChangeColor();
-            playerObject.DeathMove();
+            //playerObject.DeathMove();
             StartCoroutine(Respawn());
         }
     }
@@ -79,6 +83,7 @@ public class PlayerInfo : NetworkBehaviour
         playerHealth = maxHealth;
         kills = 0;
         ChangeColor();
+        SetDeath(false);
     }
 
     public void SetHealth(int Val)
@@ -121,6 +126,16 @@ public class PlayerInfo : NetworkBehaviour
         }
 
         playerCam.transform.localPosition = originalCamPosition;
+    }
+
+    public bool GetDeath()
+    {
+        return death;
+    }
+
+    public void SetDeath(bool _death)
+    {
+        death = _death;
     }
 
     public int GetHealth ()

@@ -22,7 +22,7 @@ public class PlayerAction : NetworkBehaviour
         laserOriginOffset = new Vector3(0, -.25f, 0);        // Lower origin of raycast so laser is visible
         laserRange = 200;                                   
         destroyLaserDelay = .25f;                           
-        Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.getHealth());
+        Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.GetHealth());
     }
 
     void Update()

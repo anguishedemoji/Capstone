@@ -27,41 +27,48 @@ public class PlayerInfo : NetworkBehaviour
     public float camShakeMagnitude = 0.5f;
     private Camera playerCam;
 
+    //Cube Object
+    PlayerCube playerObject;
+
     // UI Elements
     public Text healthText;
     public Text scoreText;
 
     Material newMaterial;
+
     void Start()
     {
         playerHealth = maxHealth;
         playerScore = rnd.Next(1, 10001);
         playerCam = GetComponentInChildren<Camera>();
-        changeColor();
+        playerObject = GetComponent<PlayerCube>();
+        ChangeColor();
     }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            takeDamage(25);
+            RpcRegisterHit();
         }
     }
 
     [ClientRpc]
     public void RpcRegisterHit()
     {
-        takeDamage(50);
-        Debug.Log("Player Health Decremented. Health: " + getHealth());
+        TakeDamage(25);
+        ChangeColor();
+        StartCoroutine(ShakeCam());
+        Debug.Log("Player Health Decremented. Health: " + GetHealth());
 
-        if (getHealth() <= 0)
+        if (GetHealth() <= 0)
         {
+            ChangeColor();
+            playerObject.DeathMove();
             StartCoroutine(Respawn());
-            setDefaults();
+
         }
     }
-       
-
 
     private IEnumerator Respawn()
     {
@@ -70,26 +77,26 @@ public class PlayerInfo : NetworkBehaviour
         Transform _spawn = NetworkManager.singleton.GetStartPosition();
         transform.position = _spawn.position;
         transform.rotation = _spawn.rotation;
+        SetDefaults();
 
 
     }
 
-    public void setDefaults ()
+    public void SetDefaults ()
     {
         playerHealth = maxHealth;
         kills = 0;
+        ChangeColor();
     }
 
-    public void setHealth(int Val)
+    public void SetHealth(int Val)
     {
         playerHealth += Val;
     }
 
-    public void takeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         playerHealth -= damage;
-        changeColor();
-        StartCoroutine(ShakeCam());
     }
 
     private IEnumerator ShakeCam()
@@ -119,7 +126,7 @@ public class PlayerInfo : NetworkBehaviour
         playerCam.transform.localPosition = originalCamPosition;
     }
 
-    public int getHealth ()
+    public int GetHealth ()
     {
         return playerHealth;
     }
@@ -127,23 +134,24 @@ public class PlayerInfo : NetworkBehaviour
     // GUI 
     void OnGUI()
     {
-        setHealthText();
-        setScoreText();
+        SetHealthText();
+        SetScoreText();
     }
 
     // Create text strings to be displayed in UI
-    void setHealthText()
+    void SetHealthText()
     {
         healthText.text = "Health: " + playerHealth.ToString();
     }
 
-    void setScoreText()
+    void SetScoreText()
     {
         scoreText.text = "Score: " + playerScore.ToString();
     }
 
-public void changeColor()
+public void ChangeColor()
 {
+        
         float healthPercent = (float)playerHealth / maxHealth;
         Debug.Log("playerHealth: " + playerHealth);
         Debug.Log("maxHealth: " + maxHealth);
@@ -160,9 +168,13 @@ public void changeColor()
         {
             newMaterial = Resources.Load<Material>("HealthSkins/50%Health");
         }
-        else if (healthPercent <= .25)
+        else if (healthPercent <= .25 && healthPercent > 0 )
         {
             newMaterial = Resources.Load<Material>("HealthSkins/25%Health");
+        }
+        else if (healthPercent <= 0)
+        {
+            newMaterial = Resources.Load<Material>("HealthSkins/0%Health");
         }
         transform.GetChild(0).GetChild(0).GetComponentInChildren<Renderer>().material = newMaterial;
         transform.GetChild(0).GetChild(1).GetComponentInChildren<Renderer>().material = newMaterial;

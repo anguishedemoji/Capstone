@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 54}
   - component: {fileID: 3008814722126908775}
   m_Layer: 0
-  m_Name: PlayerCube
+  m_Name: PlayerGameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,12 +125,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 16}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce0ac752bd66a4b23a98c5eb0e726800, type: 3}
+  m_Script: {fileID: 11500000, guid: fe94f96c3d46f9143af1c1dfbba29647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
+  moveSpeed: 8
   verticalMoveSpeed: 2
-  mouseSpeed: 5
+  mouseSpeed: 8
 --- !u!114 &63
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,14 +372,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
-      propertyPath: rigidbodyFirstPersonController
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 758793815, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
       propertyPath: m_UseGravity
       value: 0
@@ -407,6 +399,19 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1751874965, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
+      propertyPath: rigidbodyFirstPersonController
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2979153566478962690, guid: 4e624b2dcce82f04283274566fb48124,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5112653552180830080, guid: 4e624b2dcce82f04283274566fb48124,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -425,11 +430,6 @@ PrefabInstance:
     - target: {fileID: 758793814, guid: 4e624b2dcce82f04283274566fb48124, type: 3}
       propertyPath: m_Enabled
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2979153566478962690, guid: 4e624b2dcce82f04283274566fb48124,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 758793814, guid: 4e624b2dcce82f04283274566fb48124, type: 3}

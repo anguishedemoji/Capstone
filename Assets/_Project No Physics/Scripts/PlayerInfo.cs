@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class PlayerInfo : NetworkBehaviour
 {
-    // Initialize random number generator
-    System.Random rnd = new System.Random();
-
     // Player info
     [SyncVar]
     private int maxHealth = 100;
@@ -17,7 +14,7 @@ public class PlayerInfo : NetworkBehaviour
     private int playerHealth;
 
     [SyncVar]
-    public int playerScore;
+    public int playerScore = 0;
 
     [SyncVar]
     public int kills;
@@ -28,7 +25,7 @@ public class PlayerInfo : NetworkBehaviour
     private Camera playerCam;
 
     //Cube Object
-    PlayerCube playerObject;
+    private PlayerGameObject playerObject;
 
     // UI Elements
     public Text healthText;
@@ -39,9 +36,8 @@ public class PlayerInfo : NetworkBehaviour
     void Start()
     {
         playerHealth = maxHealth;
-        playerScore = rnd.Next(1, 10001);
         playerCam = GetComponentInChildren<Camera>();
-        playerObject = GetComponent<PlayerCube>();
+        playerObject = GetComponent<PlayerGameObject>();
         ChangeColor();
     }
 
@@ -59,14 +55,12 @@ public class PlayerInfo : NetworkBehaviour
         TakeDamage(25);
         ChangeColor();
         StartCoroutine(ShakeCam());
-        Debug.Log("Player Health Decremented. Health: " + GetHealth());
 
         if (GetHealth() <= 0)
         {
             ChangeColor();
             playerObject.DeathMove();
             StartCoroutine(Respawn());
-
         }
     }
 
@@ -78,8 +72,6 @@ public class PlayerInfo : NetworkBehaviour
         transform.position = _spawn.position;
         transform.rotation = _spawn.rotation;
         SetDefaults();
-
-
     }
 
     public void SetDefaults ()
@@ -97,6 +89,11 @@ public class PlayerInfo : NetworkBehaviour
     public void TakeDamage(int damage)
     {
         playerHealth -= damage;
+    }
+
+    public void IncreaseScore(int val)
+    {
+        playerScore += val;
     }
 
     private IEnumerator ShakeCam()
@@ -149,13 +146,9 @@ public class PlayerInfo : NetworkBehaviour
         scoreText.text = "Score: " + playerScore.ToString();
     }
 
-public void ChangeColor()
-{
-        
+    public void ChangeColor()
+    {
         float healthPercent = (float)playerHealth / maxHealth;
-        Debug.Log("playerHealth: " + playerHealth);
-        Debug.Log("maxHealth: " + maxHealth);
-        Debug.Log("healthPercent: " + healthPercent);
         if (healthPercent > .75)
         {
         newMaterial = Resources.Load<Material>("HealthSkins/FullHealth");

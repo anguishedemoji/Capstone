@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerCube : NetworkBehaviour
+public class PlayerGameObject : NetworkBehaviour
 {
     public float moveSpeed;
     public float verticalMoveSpeed = 2.0f;
@@ -18,7 +16,6 @@ public class PlayerCube : NetworkBehaviour
     [SyncVar]
     Quaternion serverplayerRotation;
     Vector3 serverPositionSmoothVelocity;
-
 
     void Start()
     {
@@ -54,7 +51,14 @@ public class PlayerCube : NetworkBehaviour
         //escape mouse lock
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Cursor.lockState = CursorLockMode.None;
+            if(Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
 
         // Get player movement input along X and Y axes

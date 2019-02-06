@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -14,12 +13,14 @@ public class PlayerAction : NetworkBehaviour
     private Quaternion serverCamRotation;   // server camera rotation
     private PlayerInfo playerInfo;
 
+    private int scorePerHit = 100;          // score gained per player hit
+
     void Start()
     {
         cam = GetComponentInChildren<Camera>().transform;   // Get position of player camera
         serverCamRotation = cam.rotation;                   // Initialize rotation of camera on server
         playerInfo = GetComponent<PlayerInfo>();            // Get reference to player's info
-        laserOriginOffset = new Vector3(0, -.25f, 0);        // Lower origin of raycast so laser is visible
+        laserOriginOffset = new Vector3(0, -.25f, 0);       // Lower origin of raycast so laser is visible
         laserRange = 200;                                   
         destroyLaserDelay = .25f;                           
         Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.GetHealth());
@@ -57,10 +58,9 @@ public class PlayerAction : NetworkBehaviour
             {
                 // Get netId from CapGuy model's parent gameObject
                 NetworkIdentity hitPlayerIdentity = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>();
-                Debug.Log("Network Id: " + hitPlayerIdentity.netId);
                 PlayerCube localHitPlayer = NetworkServer.FindLocalObject(hitPlayerIdentity.netId).GetComponent<PlayerCube>();
-                Debug.Log("localHitPlayer: " + localHitPlayer);
-                localHitPlayer.GetComponent<PlayerInfo>().RpcRegisterHit();
+                localHitPlayer.GetComponent<PlayerInfo>().RpcRegisterHit(); // register hit on other player
+                playerInfo.IncreaseScore(scorePerHit);                      // increase points for this player
             }
         }
         // If raycast hits nothing

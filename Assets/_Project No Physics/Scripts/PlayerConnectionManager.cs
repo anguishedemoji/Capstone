@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 
 public class PlayerConnectionManager : NetworkBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         // FOR NOW spawn immediately
@@ -19,13 +16,6 @@ public class PlayerConnectionManager : NetworkBehaviour
 
     public GameObject PlayerUnitPrefab;
 
-    // Update is called once per frame
-    void Update()
-    {
-
-
-    }
-
     public void SpawnPlayer()
     {
         if (isServer == false)
@@ -34,7 +24,6 @@ public class PlayerConnectionManager : NetworkBehaviour
             return;
         }
         //Gets called when by Game Manager when a new rounds starts
-        //TODO: maybe pick customize, colors, name etc
 
         GameObject go = Instantiate(PlayerUnitPrefab);
 

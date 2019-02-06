@@ -25,7 +25,7 @@ public class PlayerInfo : NetworkBehaviour
     private Camera playerCam;
 
     //Cube Object
-    PlayerCube playerObject;
+    private PlayerGameObject playerObject;
 
     // UI Elements
     public Text healthText;
@@ -37,7 +37,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerHealth = maxHealth;
         playerCam = GetComponentInChildren<Camera>();
-        playerObject = GetComponent<PlayerCube>();
+        playerObject = GetComponent<PlayerGameObject>();
         ChangeColor();
     }
 

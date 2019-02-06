@@ -20,7 +20,6 @@ public class PlayerConnectionManager : NetworkBehaviour
     {
         if (isServer == false)
         {
-            Debug.LogError("Why was it called from client!!!");
             return;
         }
         //Gets called when by Game Manager when a new rounds starts

@@ -23,7 +23,6 @@ public class PlayerAction : NetworkBehaviour
         laserOriginOffset = new Vector3(0, -.25f, 0);       // Lower origin of raycast so laser is visible
         laserRange = 200;                                   
         destroyLaserDelay = .25f;                           
-        Debug.Log("Player: " + netId.Value + ", Health: " + playerInfo.GetHealth());
     }
 
     void Update()
@@ -58,7 +57,7 @@ public class PlayerAction : NetworkBehaviour
             {
                 // Get netId from CapGuy model's parent gameObject
                 NetworkIdentity hitPlayerIdentity = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>();
-                PlayerCube localHitPlayer = NetworkServer.FindLocalObject(hitPlayerIdentity.netId).GetComponent<PlayerCube>();
+                PlayerGameObject localHitPlayer = NetworkServer.FindLocalObject(hitPlayerIdentity.netId).GetComponent<PlayerGameObject>();
                 localHitPlayer.GetComponent<PlayerInfo>().RpcRegisterHit(); // register hit on other player
                 playerInfo.IncreaseScore(scorePerHit);                      // increase points for this player
             }

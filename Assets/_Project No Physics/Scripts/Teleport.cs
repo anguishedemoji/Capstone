@@ -20,14 +20,13 @@ public class Teleport : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
-        if(other.name == "PlayerCube(Clone)")
+        if(other.name == "PlayerGameObject(Clone)")
         {
 
             float x = endpoint.transform.forward.x;
             float z = endpoint.transform.forward.z;
             Vector3 newForward = new Vector3(x, 0, z);
-        other.transform.position = endpoint.transform.position;
+            other.transform.position = endpoint.transform.position;
             other.transform.forward = newForward;
         }
     }

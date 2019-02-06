@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class PlayerCube : NetworkBehaviour
+public class PlayerGameObject : NetworkBehaviour
 {
     public float moveSpeed;
     public float verticalMoveSpeed = 2.0f;

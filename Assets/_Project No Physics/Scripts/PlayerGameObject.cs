@@ -10,6 +10,8 @@ public class PlayerGameObject : NetworkBehaviour
     private Camera cam;
     private CharacterController controller;
 
+    
+
     [SyncVar]
     Vector3 serverPosition;
 
@@ -40,6 +42,20 @@ public class PlayerGameObject : NetworkBehaviour
             return;
         }
 
+        if (GetComponent<PlayerInfo>().GetDeath())
+        {
+            DeathMovementAnimation();
+        }
+        else
+        {
+            NormalGameMovement();
+        }
+
+        //return;
+    }
+
+    void NormalGameMovement ()
+    {
         cam.enabled = true;
 
         float X = Input.GetAxis("Mouse X") * mouseSpeed;
@@ -51,7 +67,7 @@ public class PlayerGameObject : NetworkBehaviour
         //escape mouse lock
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(Cursor.lockState == CursorLockMode.Locked)
+            if (Cursor.lockState == CursorLockMode.Locked)
             {
                 Cursor.lockState = CursorLockMode.None;
             }
@@ -66,7 +82,7 @@ public class PlayerGameObject : NetworkBehaviour
         direction = transform.TransformDirection(direction);
 
         // Vertical movement upwards (+Y direction)
-        if (Input.GetKey(KeyCode.Space) || Input.GetAxis("Mouse ScrollWheel") > 0) 
+        if (Input.GetKey(KeyCode.Space) || Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             direction.y = verticalMoveSpeed;
         }
@@ -80,7 +96,18 @@ public class PlayerGameObject : NetworkBehaviour
         controller.Move(direction * Time.deltaTime);
 
         CmdUpdatePosition(transform.position, transform.rotation);
-        return;
+    }
+
+    void DeathMovementAnimation()
+    {
+        float y = serverPosition.y - 1;
+        Vector3 newPosition = new Vector3(serverPosition.x, y, serverPosition.z);
+        Quaternion newRotation = Quaternion.Euler(90f, 0.0f, 0.0f);
+
+        transform.position = newPosition;
+        transform.rotation = newRotation;
+
+        CmdUpdatePosition(transform.position, transform.rotation);
     }
 
     [Command]
@@ -90,23 +117,5 @@ public class PlayerGameObject : NetworkBehaviour
 
         serverPosition = newPosition;
         serverplayerRotation = rotation;
-    }
-
-    public void DeathMove()
-    {
-        Debug.Log("DEEEEEEEEEEEEATHHH MOOOOOOOOOOOOVE");
-        Vector3 newPosition = new Vector3(serverPosition.x, 0.0f, serverPosition.z);
-        Quaternion newRotation = Quaternion.Euler(90f, 0.0f, 0.0f);
-
-
-        //Vector3 direction = new Vector3(serverPosition.x, 0.0f, serverPosition.z);
-        //direction = transform.TransformDirection(direction);
-        //direction *= moveSpeed;
-        //controller.Move(direction * Time.deltaTime);
-
-        transform.position = newPosition;
-        transform.rotation = newRotation;
-
-        CmdUpdatePosition(transform.position, transform.rotation);
     }
 }

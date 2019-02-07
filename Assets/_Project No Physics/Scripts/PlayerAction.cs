@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class PlayerAction : NetworkBehaviour
 {
@@ -8,10 +9,12 @@ public class PlayerAction : NetworkBehaviour
     public int laserRange;                  // Range of laser
     public float destroyLaserDelay;         // Time delay before destroying laser
     public Vector3 laserOriginOffset;       // Offset to increase laser visibility
+    public Text targetedPlayerText;
+    public int targetingRange;              // Range to cover while attempting to find target
 
     private Transform cam;                  // local camera transform
     private Quaternion serverCamRotation;   // server camera rotation
-    private PlayerInfo playerInfo;
+    private PlayerInfo playerInfo;          // display area for name of targeted player
 
     private int scorePerHit = 100;          // score gained per player hit
 
@@ -22,7 +25,8 @@ public class PlayerAction : NetworkBehaviour
         playerInfo = GetComponent<PlayerInfo>();            // Get reference to player's info
         laserOriginOffset = new Vector3(0, -.25f, 0);       // Lower origin of raycast so laser is visible
         laserRange = 200;                                   
-        destroyLaserDelay = .25f;                           
+        destroyLaserDelay = .25f;
+        targetingRange = 3 * laserRange;
     }
 
     void Update()
@@ -31,6 +35,19 @@ public class PlayerAction : NetworkBehaviour
         {
             cam.rotation = serverCamRotation;    // update camera's rotation to enable proper raycasts
             return;
+        }
+
+        // If pointing at another player, identify them and display on UI
+        Ray ray = new Ray(cam.position, cam.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, targetingRange) && hit.transform.gameObject.name == "CapGuy")  // cast ray to find another player
+        {
+            uint targetedPlayerId = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>().netId.Value;
+            targetedPlayerText.text = "Player " + targetedPlayerId;
+        }
+        else
+        {
+            targetedPlayerText.text = "";   // if no player found, empty the display text
         }
 
         // Fire laser if mouse clicked & we have authority over this player

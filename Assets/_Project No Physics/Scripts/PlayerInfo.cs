@@ -33,6 +33,7 @@ public class PlayerInfo : NetworkBehaviour
     // UI Elements
     public Text healthText;
     public Text scoreText;
+    public Text playerNameText;
 
     Material newMaterial;
 
@@ -44,6 +45,14 @@ public class PlayerInfo : NetworkBehaviour
         playerObject = GetComponent<PlayerGameObject>();
         camRelativePosition = playerCam.transform.localPosition;
         ChangeColor();
+
+        // If authoratative version of player, set player name in UI
+        if (hasAuthority)
+        {
+            uint playerId = GetComponent<NetworkIdentity>().netId.Value;
+            playerNameText.text = "Player " + playerId;
+        }
+        
     }
 
     void Update()

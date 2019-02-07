@@ -45,14 +45,15 @@ public class PlayerInfo : NetworkBehaviour
         playerObject = GetComponent<PlayerGameObject>();
         camRelativePosition = playerCam.transform.localPosition;
         ChangeColor();
+    }
 
-        // If authoratative version of player, set player name in UI
-        if (hasAuthority)
+    public override void OnStartAuthority()
+    {
+        if (hasAuthority)   // display player's id
         {
             uint playerId = GetComponent<NetworkIdentity>().netId.Value;
             playerNameText.text = "Player " + playerId;
         }
-        
     }
 
     void Update()

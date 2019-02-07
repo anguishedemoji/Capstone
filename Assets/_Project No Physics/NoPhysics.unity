@@ -558,6 +558,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 192635610}
     m_Modifications:
+    - target: {fileID: 8148406260067410207, guid: f536bca4453c4634187ccbbf301a074e,
+        type: 3}
+      propertyPath: m_Name
+      value: Portal-Purple
+      objectReference: {fileID: 0}
     - target: {fileID: 6037692176607199173, guid: f536bca4453c4634187ccbbf301a074e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -612,11 +617,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8148406260067410207, guid: f536bca4453c4634187ccbbf301a074e,
-        type: 3}
-      propertyPath: m_Name
-      value: Portal-Purple
       objectReference: {fileID: 0}
     - target: {fileID: 8115414510351705823, guid: f536bca4453c4634187ccbbf301a074e,
         type: 3}
@@ -1327,6 +1327,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 192635610}
     m_Modifications:
+    - target: {fileID: 8148406260067410207, guid: f536bca4453c4634187ccbbf301a074e,
+        type: 3}
+      propertyPath: m_Name
+      value: Portal-Purple
+      objectReference: {fileID: 0}
     - target: {fileID: 6037692176607199173, guid: f536bca4453c4634187ccbbf301a074e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1381,11 +1386,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8148406260067410207, guid: f536bca4453c4634187ccbbf301a074e,
-        type: 3}
-      propertyPath: m_Name
-      value: Portal-Purple
       objectReference: {fileID: 0}
     - target: {fileID: 8115414510351705823, guid: f536bca4453c4634187ccbbf301a074e,
         type: 3}

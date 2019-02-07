@@ -25,6 +25,8 @@ public class PlayerInfo : NetworkBehaviour
     public float camShakeMagnitude = 0.5f;
     private Camera playerCam;
 
+    private Vector3 camRelativePosition;
+
     //Cube Object
     private PlayerGameObject playerObject;
 
@@ -40,6 +42,7 @@ public class PlayerInfo : NetworkBehaviour
         playerHealth = maxHealth;
         playerCam = GetComponentInChildren<Camera>();
         playerObject = GetComponent<PlayerGameObject>();
+        camRelativePosition = playerCam.transform.localPosition;
         ChangeColor();
     }
 
@@ -62,7 +65,6 @@ public class PlayerInfo : NetworkBehaviour
         {
             SetDeath(true);
             ChangeColor();
-            //playerObject.DeathMove();
             StartCoroutine(Respawn());
         }
     }
@@ -74,6 +76,7 @@ public class PlayerInfo : NetworkBehaviour
         Transform _spawn = NetworkManager.singleton.GetStartPosition();
         transform.position = _spawn.position;
         transform.rotation = _spawn.rotation;
+        playerCam.transform.localPosition = camRelativePosition;
         SetDefaults();
     }
 
@@ -104,7 +107,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         float elapsed = 0.0f;
 
-        Vector3 originalCamPosition = playerCam.transform.localPosition;
+        //Vector3 originalCamPosition = playerCam.transform.localPosition;
 
         while (elapsed < camShakeDuration)
         {
@@ -119,12 +122,12 @@ public class PlayerInfo : NetworkBehaviour
             x *= camShakeMagnitude * damper;
             y *= camShakeMagnitude * damper;
 
-            playerCam.transform.localPosition = new Vector3(x, y, originalCamPosition.z);
+            playerCam.transform.localPosition = new Vector3(x, y, camRelativePosition.z);
 
             yield return null;
         }
 
-        playerCam.transform.localPosition = originalCamPosition;
+        playerCam.transform.localPosition = camRelativePosition;
     }
 
     public bool GetDeath()

@@ -10,8 +10,6 @@ public class PlayerGameObject : NetworkBehaviour
     private Camera cam;
     private CharacterController controller;
 
-    
-
     [SyncVar]
     Vector3 serverPosition;
 

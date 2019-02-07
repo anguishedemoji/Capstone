@@ -38,17 +38,17 @@ public class PlayerAction : NetworkBehaviour
         }
 
         // If pointing at another player, identify them and display on UI
-        Ray ray = new Ray(cam.position, cam.forward);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, targetingRange) && hit.transform.gameObject.name == "CapGuy")  // cast ray to find another player
-        {
-            uint targetedPlayerId = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>().netId.Value;
-            targetedPlayerText.text = "Player " + targetedPlayerId;
-        }
-        else
-        {
-            targetedPlayerText.text = "";   // if no player found, empty the display text
-        }
+        //Ray ray = new Ray(cam.position, cam.forward);
+        //RaycastHit hit;
+        //if (Physics.Raycast(ray, out hit, targetingRange) && hit.transform.gameObject.name == "CapGuy")  // cast ray to find another player
+        //{
+        //    uint targetedPlayerId = hit.transform.parent.gameObject.GetComponent<NetworkIdentity>().netId.Value;
+        //    targetedPlayerText.text = "Player " + targetedPlayerId;
+        //}
+        //else
+        //{
+        //    targetedPlayerText.text = "";   // if no player found, empty the display text
+        //}
 
         // Fire laser if mouse clicked & we have authority over this player
         if (Input.GetMouseButtonDown(0) && hasAuthority == true)

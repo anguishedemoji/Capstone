@@ -34,6 +34,7 @@ public class PlayerInfo : NetworkBehaviour
     public Text healthText;
     public Text scoreText;
     public Text playerNameText;
+    public Text playerLabelText;    // text displayed over player's head in game
 
     Material newMaterial;
 
@@ -47,11 +48,19 @@ public class PlayerInfo : NetworkBehaviour
         ChangeColor();
     }
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        uint playerId = GetComponent<NetworkIdentity>().netId.Value;
+        playerLabelText.text = "Player " + playerId;
+    }
+
     public override void OnStartAuthority()
     {
+        base.OnStartAuthority();
+        uint playerId = GetComponent<NetworkIdentity>().netId.Value;
         if (hasAuthority)   // display player's id
         {
-            uint playerId = GetComponent<NetworkIdentity>().netId.Value;
             playerNameText.text = "Player " + playerId;
         }
     }

@@ -14,11 +14,4 @@ public class LocalCanvas : NetworkBehaviour
         }
         GetComponentInChildren<Canvas>().enabled = true;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-        
-    }
 }

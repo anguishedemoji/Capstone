@@ -21,13 +21,6 @@ public class PlayerConnectionObject : NetworkBehaviour {
 
         Debug.Log("PlayerConnectionObject::Start -- Spawning my own personal unit.");
 
-        // Instantiate() only creates an object on the LOCAL COMPUTER.
-        // Even if it has a NetworkIdentity is still will NOT exist on
-        // the network (and therefore not on any other client) UNLESS
-        // NetworkServer.Spawn() is called on this object.
-
-        //Instantiate(PlayerUnitPrefab);
-
         // Command (politely) the server to SPAWN our unit
         CmdSpawnMyUnit();
 	}

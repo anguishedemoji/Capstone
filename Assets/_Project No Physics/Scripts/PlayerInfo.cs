@@ -44,7 +44,7 @@ public class PlayerInfo : NetworkBehaviour
         playerHealth = maxHealth;
         playerCam = GetComponentInChildren<Camera>();
         playerObject = GetComponent<PlayerGameObject>();
-        camRelativePosition = playerCam.transform.localPosition;
+        camRelativePosition = playerCam.transform.localPosition;    // Store position to return camera to after ShakeCam() resolves
         ChangeColor();
     }
 
@@ -125,8 +125,6 @@ public class PlayerInfo : NetworkBehaviour
     private IEnumerator ShakeCam()
     {
         float elapsed = 0.0f;
-
-        //Vector3 originalCamPosition = playerCam.transform.localPosition;
 
         while (elapsed < camShakeDuration)
         {

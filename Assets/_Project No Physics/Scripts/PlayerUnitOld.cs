@@ -21,8 +21,6 @@ public class PlayerUnitOld : NetworkBehaviour {
 
         if (hasAuthority)
         {
-            //cam.enabled = true;
-            //offset = cam.transform.position - this.transform.position;
             return;
         }
         cam.enabled = false;
@@ -51,10 +49,8 @@ public class PlayerUnitOld : NetworkBehaviour {
             return;
         }
 
-
         // If we get to here, we are the authoritative owner of this object
-       //transform.Translate( velocity * Time.deltaTime );
-
+        //transform.Translate( velocity * Time.deltaTime );
 
         if( Input.GetKeyDown(KeyCode.Space) )
         {
@@ -65,23 +61,6 @@ public class PlayerUnitOld : NetworkBehaviour {
         {
             Destroy(gameObject);
         }
-        //if (Input.GetKeyDown(KeyCode.A))
-        //{
-        //    this.transform.Translate(-1, 0, 0);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    this.transform.Translate(0, 0, 1);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.D))
-        //{
-        //    this.transform.Translate(1, 0, 0);
-        //}
-
-
-
     }
 
     private void FixedUpdate()
@@ -106,10 +85,6 @@ public class PlayerUnitOld : NetworkBehaviour {
         // I am on a server
         this.transform.position = p;
         velocity = v;
-
-        // If we know what our current latency is, we could do something like this:
-        //transform.position = p + (v * (ourLatency));
-
 
         // Now let the clients know the correct position of this object.
         RpcUpdateVelocity( velocity, this.transform.position);

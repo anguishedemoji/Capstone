@@ -14,17 +14,9 @@ public class PlayerPrefab : NetworkBehaviour
         {
             SpawnPlayer();
         }
-        
     }
 
     public GameObject PlayerUnitPrefab;
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-       
-    }
 
     public void SpawnPlayer()
     {
@@ -37,9 +29,6 @@ public class PlayerPrefab : NetworkBehaviour
         //TODO: maybe pick customize, colors, name etc
 
         GameObject go = Instantiate(PlayerUnitPrefab);
-
-        // The is to tell everyone else to spawn it from the Server
-        //NetworkServer.Spawn(go);
 
         //Give Authority over Player
         NetworkServer.SpawnWithClientAuthority(go, connectionToClient); 
